@@ -1,30 +1,38 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const { getCoinInfo, getMarketCapInfos, getPriceData } = require("./data/configData");
+const {
+  getCoinInfo,
+  getMarketCapInfos,
+  getPriceData
+} = require("./data/configData");
 
 const PORT = 8080;
 let coinInfos = null;
 
-getCoinInfo().then((result) => {
+getCoinInfo().then(result => {
   coinInfos = result;
 });
 
-setInterval(() => {
-  getCoinInfo().then((result) => {
-    coinInfos = result;
-  });
-}, 60 * 60 * 1000);
+setInterval(
+  () => {
+    getCoinInfo().then(result => {
+      coinInfos = result;
+    });
+  },
+  60 * 60 * 1000
+);
 
 const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    method: "GET",
+    method: "GET"
   })
 );
 
 app.get("/coin-info/:code", (req, res) => {
+  console.log(req.params);
   const code = req.params.code;
   if (coinInfos === null) {
     res.status(503).end();

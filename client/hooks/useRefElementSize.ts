@@ -1,12 +1,12 @@
 import {
   CHART_X_AXIS_MARGIN,
   CHART_Y_AXIS_MARGIN
-} from '@/constants/ChartConstants'
-import { useState, useEffect, RefObject } from 'react'
+} from "@/constants/ChartConstants";
+import { useState, useEffect, RefObject } from "react";
 
 export interface RefElementSize {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
 /**
@@ -18,21 +18,21 @@ export function useRefElementSize(ref: RefObject<Element>) {
   const [refElementSize, setRefElementSize] = useState<RefElementSize>({
     width: CHART_Y_AXIS_MARGIN,
     height: CHART_X_AXIS_MARGIN
-  })
+  });
   useEffect(() => {
     function handleResize() {
       if (ref.current === null) {
-        console.error('useWindow 훅의 매개변수에 이상있음')
-        return
+        console.error("useWindow 훅의 매개변수에 이상있음");
+        return;
       }
       setRefElementSize({
         width: ref.current.clientWidth,
         height: ref.current.clientHeight
-      })
+      });
     }
-    window.addEventListener('resize', handleResize)
-    handleResize()
-    return () => window.removeEventListener('resize', handleResize)
-  }, [ref, ref?.current?.clientWidth, ref?.current?.clientHeight])
-  return refElementSize
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, [ref, ref?.current?.clientWidth, ref?.current?.clientHeight]);
+  return refElementSize;
 }

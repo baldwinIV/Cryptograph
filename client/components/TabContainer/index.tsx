@@ -1,7 +1,7 @@
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Box from '@mui/material/Box'
-import { CoinPriceObj } from '@/types/CoinPriceTypes'
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import { CoinPriceObj } from "@/types/CoinPriceTypes";
 import {
   Dispatch,
   SetStateAction,
@@ -9,21 +9,21 @@ import {
   Children,
   isValidElement,
   SyntheticEvent
-} from 'react'
+} from "react";
 
 export interface TabProps {
-  tabLabelInfo?: string
-  priceInfo?: CoinPriceObj
+  tabLabelInfo?: string;
+  priceInfo?: CoinPriceObj;
 }
 interface TabContainerProps {
-  selectedTab: number
-  setSelectedTab: Dispatch<SetStateAction<number>>
-  children: ReactNode
+  selectedTab: number;
+  setSelectedTab: Dispatch<SetStateAction<number>>;
+  children: ReactNode;
 }
 interface TabPanelProps {
-  children?: ReactNode
-  index: number
-  value: number
+  children?: ReactNode;
+  index: number;
+  value: number;
 }
 
 function TabPanel({ children, value, index, ...other }: TabPanelProps) {
@@ -38,14 +38,14 @@ function TabPanel({ children, value, index, ...other }: TabPanelProps) {
       <Box>{children}</Box>
       {/* {value === index && <Box>{children}</Box>} */}
     </div>
-  )
+  );
 }
 
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
-  }
+    "aria-controls": `simple-tabpanel-${index}`
+  };
 }
 
 export default function TabContainer({
@@ -54,11 +54,11 @@ export default function TabContainer({
   children
 }: TabContainerProps) {
   const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setSelectedTab(newValue)
-  }
+    setSelectedTab(newValue);
+  };
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Box sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
@@ -67,29 +67,29 @@ export default function TabContainer({
         >
           {Children.map(children, (child, index) => {
             if (!isValidElement(child)) {
-              console.error('올바른 리액트 노드가 아님')
-              return false
+              console.error("올바른 리액트 노드가 아님");
+              return false;
             }
             return (
               <Tab
-                label={child.props.tabLabelInfo || '상세정보'}
+                label={child.props.tabLabelInfo || "상세정보"}
                 {...a11yProps(index)}
               />
-            )
+            );
           })}
         </Tabs>
       </Box>
       {Children.map(children, (child, index) => {
         if (!isValidElement(child)) {
-          console.error('올바른 리액트 노드가 아님')
-          return false
+          console.error("올바른 리액트 노드가 아님");
+          return false;
         }
         return (
           <TabPanel value={selectedTab} index={index}>
             {child}
           </TabPanel>
-        )
+        );
       })}
     </Box>
-  )
+  );
 }

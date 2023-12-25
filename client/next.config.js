@@ -4,9 +4,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 's2.coinmarketcap.com',
-        pathname: '/static/img/**'
+        protocol: "https",
+        hostname: "s2.coinmarketcap.com",
+        pathname: "/static/img/**"
       }
     ]
   },
@@ -14,6 +14,6 @@ const nextConfig = {
   compiler: {
     emotion: true
   }
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

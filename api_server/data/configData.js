@@ -2,13 +2,14 @@ const {
   getCoinData,
   getCoinMetaData,
   getUpbitMarketCode,
-  getUpbitMarketDatas,
+  getUpbitMarketDatas
 } = require("./getData");
+const { getCurrentTime, transPrice } = require("../utils/timeUtils");
 
 // 코인정보 반환하는 함수
 // 업비트API를 이용하여 코인종류 확인하고 해당 코인들 정보 코인마켓캡에서 받아와 조합
 async function getCoinInfo() {
-  const time = getTime();
+  const time = getCurrentTime();
   const upbitMarketCodes = await getUpbitMarketCode();
   const result = {};
   const coinIds = [];
@@ -68,38 +69,12 @@ async function getCoinInfo() {
     const coinInfo = result[code];
     const id = coinInfo.id;
     const metaData = coinMetaDatas[id];
-    coinInfo.website = metaData.urls.website.length === 0 ? "" : metaData.urls.website[0];
+    coinInfo.website =
+      metaData.urls.website.length === 0 ? "" : metaData.urls.website[0];
     coinInfo.logo = metaData.logo;
     coinInfo.description = metaData.description;
   }
   return result;
-}
-
-// 업데이트 당시 시간 구하는 함수
-function getTime() {
-  const curr = new Date();
-  const utcCurr = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
-  const diffFromKst = 9 * 60 * 60 * 1000;
-  const kstCurr = new Date(utcCurr + diffFromKst);
-  const dateString = `${kstCurr.getMonth() + 1}/${kstCurr.getDate()} ${kstCurr.getHours()}시`;
-  return dateString;
-}
-
-const priceUnit = { 10000: "만", 100000000: "억", 1000000000000: "조" };
-
-// 시가총액 변환하는 함수
-function transPrice(price) {
-  let unit = 10000;
-  if (price < unit) {
-    return Math.floor(price * 100) / 100 + "";
-  }
-  while (unit < Number.MAX_SAFE_INTEGER) {
-    if (price >= unit && price < unit * 10000) {
-      return Math.floor((price * 100) / unit) / 100 + priceUnit[unit];
-    }
-    unit *= 10000;
-  }
-  return price;
 }
 
 // 메인페이지에 전달할 데이터 조합
@@ -110,10 +85,10 @@ async function getMarketCapInfos(coinInfos) {
   }
   const upbitMarketDatas = await getUpbitMarketDatas(
     Object.keys(coinInfos)
-      .map((code) => `KRW-${code}`)
+      .map(code => `KRW-${code}`)
       .join(",")
   );
-  const result = upbitMarketDatas.map((marketData) => {
+  const result = upbitMarketDatas.map(marketData => {
     const code = marketData.market.split("-")[1];
     return {
       name: code,
@@ -123,7 +98,7 @@ async function getMarketCapInfos(coinInfos) {
       logo: coinInfos[code].logo,
       market_cap: coinInfos[code].market_cap,
       acc_trade_price_24h: marketData.acc_trade_price_24h,
-      signed_change_rate: marketData.signed_change_rate,
+      signed_change_rate: marketData.signed_change_rate
     };
   });
   return result;

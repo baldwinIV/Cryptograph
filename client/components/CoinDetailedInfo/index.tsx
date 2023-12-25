@@ -1,16 +1,16 @@
-import { memo } from 'react'
-import { TabProps } from '@/components/TabContainer'
-import { styled } from '@mui/material'
-import Image from 'next/image'
-import { CoinMetaData } from '@/types/CoinDataTypes'
-import { useCoinMetaData } from 'hooks/useCoinMetaData'
+import { memo } from "react";
+import { TabProps } from "@/components/TabContainer";
+import { styled } from "@mui/material";
+import Image from "next/image";
+import { CoinMetaData } from "@/types/CoinDataTypes";
+import { useCoinMetaData } from "hooks/useCoinMetaData";
 
 //코인 상세정보
 interface CoinDetailedInfoProps extends TabProps {
-  market: string
+  market: string;
 }
 function CoinDetailedInfo({ market }: CoinDetailedInfoProps) {
-  const coinMetaData: CoinMetaData | null = useCoinMetaData(market)
+  const coinMetaData: CoinMetaData | null = useCoinMetaData(market);
   return coinMetaData === null ? (
     <Container></Container>
   ) : (
@@ -36,14 +36,14 @@ function CoinDetailedInfo({ market }: CoinDetailedInfoProps) {
           <BodyContent>시가총액 순위: {coinMetaData.cmc_rank}위</BodyContent>
           <BodyContent>24시간 거래량: {coinMetaData.volume_24h}원</BodyContent>
           <BodyContent key="max_supply">
-            최대 공급량:{' '}
+            최대 공급량:{" "}
             {coinMetaData.max_supply === null
-              ? '미정'
+              ? "미정"
               : Math.floor(coinMetaData.max_supply).toLocaleString() +
                 coinMetaData.symbol}
           </BodyContent>
           <BodyContent key="total_supply">
-            총 공급량:{' '}
+            총 공급량:{" "}
             {Math.floor(coinMetaData.total_supply).toLocaleString() +
               coinMetaData.symbol}
           </BodyContent>
@@ -53,12 +53,12 @@ function CoinDetailedInfo({ market }: CoinDetailedInfoProps) {
         </BodyContentContainer>
       </Body>
     </Container>
-  )
+  );
 }
 
-export default memo(CoinDetailedInfo)
+export default memo(CoinDetailedInfo);
 
-const Container = styled('div')`
+const Container = styled("div")`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -66,29 +66,29 @@ const Container = styled('div')`
   padding: 16px;
   background-color: #ffffff;
   font-size: 12px;
-  ${props => props.theme.breakpoints.up('tablet')} {
+  ${props => props.theme.breakpoints.up("tablet")} {
     margin-bottom: 8px;
   }
-`
+`;
 
-const Header = styled('div')`
+const Header = styled("div")`
   display: flex;
   flex-direction: row;
-`
-const HeaderContent = styled('div')`
+`;
+const HeaderContent = styled("div")`
   display: flex;
   margin-left: 8px;
   font-size: 15px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-`
+`;
 
-const Body = styled('div')``
-const BodyHeader = styled('div')`
+const Body = styled("div")``;
+const BodyHeader = styled("div")`
   font-weight: bold;
-`
-const BodyContentContainer = styled('div')`
+`;
+const BodyContentContainer = styled("div")`
   height: auto;
-`
-const BodyContent = styled('div')``
+`;
+const BodyContent = styled("div")``;

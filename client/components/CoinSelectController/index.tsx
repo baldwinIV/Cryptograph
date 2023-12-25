@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles'
-import Checkbox from '@mui/material/Checkbox'
+import { styled } from "@mui/material/styles";
+import Checkbox from "@mui/material/Checkbox";
 import {
   ChangeEvent,
   Dispatch,
@@ -7,92 +7,92 @@ import {
   useContext,
   useEffect,
   useState
-} from 'react'
-import Image from 'next/image'
-import { MarketCapInfo } from '@/types/CoinDataTypes'
-import SearchCoin from './SearchCoin'
-import MakeCoinDict from './MakeCoinDict'
-import { MyAppContext } from '@/pages/_app'
+} from "react";
+import Image from "next/image";
+import { MarketCapInfo } from "@/types/CoinDataTypes";
+import SearchCoin from "./SearchCoin";
+import MakeCoinDict from "./MakeCoinDict";
+import { MyAppContext } from "@/pages/_app";
 
 interface dict<T> {
-  [key: string]: T
+  [key: string]: T;
 }
 
 interface CoinChecked {
-  [key: string]: boolean
+  [key: string]: boolean;
 }
 interface CoinSelectControllerProps {
-  selectedCoinListSetter: Dispatch<SetStateAction<string[]>>
-  tabLabelInfo?: string
+  selectedCoinListSetter: Dispatch<SetStateAction<string[]>>;
+  tabLabelInfo?: string;
 }
 
 export default function CoinSelectController({
   selectedCoinListSetter
 }: CoinSelectControllerProps) {
-  const data = useContext(MyAppContext)
-  const [coinList, setCoinList] = useState<MarketCapInfo[] | null>(data)
+  const data = useContext(MyAppContext);
+  const [coinList, setCoinList] = useState<MarketCapInfo[] | null>(data);
   const [checked, setChecked] = useState<CoinChecked>(() => {
     const initCheckedList: CoinChecked = {
       all: true
-    }
-    if (coinList == null) return initCheckedList
+    };
+    if (coinList == null) return initCheckedList;
     for (const coin of coinList) {
-      initCheckedList[coin.name] = true
+      initCheckedList[coin.name] = true;
     }
-    return initCheckedList
-  })
-  const [inputCoinName, setInputCoinName] = useState('')
+    return initCheckedList;
+  });
+  const [inputCoinName, setInputCoinName] = useState("");
   const [coinDict, setCoinDict] = useState<dict<Array<string>>>(
     MakeCoinDict(data)
-  )
+  );
 
   useEffect(() => {
-    if (coinList == null) return
+    if (coinList == null) return;
     for (const coin of coinList) {
-      checked[coin.name] = true
+      checked[coin.name] = true;
     }
 
     setChecked({
       ...checked
-    })
-  }, [coinList])
+    });
+  }, [coinList]);
 
   useEffect(() => {
     selectedCoinListSetter(
       Object.keys(checked).filter(x => {
-        return checked[x] && x !== 'all'
+        return checked[x] && x !== "all";
       })
-    )
-  }, [checked])
+    );
+  }, [checked]);
 
   const coinCheckAll = (event: ChangeEvent<HTMLInputElement>) => {
-    if (checked['all']) {
+    if (checked["all"]) {
       for (const coin in checked) {
-        checked[coin] = event.target.checked
+        checked[coin] = event.target.checked;
       }
     } else {
       for (const coin in checked) {
         if (
-          coin !== 'all' &&
+          coin !== "all" &&
           inputCoinName &&
           !coinDict[inputCoinName].includes(coin)
         )
-          continue
-        checked[coin] = event.target.checked
+          continue;
+        checked[coin] = event.target.checked;
       }
     }
 
     setChecked({
       ...checked
-    })
-  }
+    });
+  };
 
   const coinCheck = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked({
       ...checked,
       [event.target.name]: event.target.checked
-    })
-  }
+    });
+  };
 
   return (
     <Container>
@@ -121,8 +121,8 @@ export default function CoinSelectController({
               style={
                 inputCoinName
                   ? coinDict[inputCoinName]?.includes(coin.name)
-                    ? { display: 'flex' }
-                    : { display: 'none' }
+                    ? { display: "flex" }
+                    : { display: "none" }
                   : {}
               }
             >
@@ -137,14 +137,14 @@ export default function CoinSelectController({
                 name={coin.name}
               />
             </SelectCoinInnerLayer>
-          )
+          );
         })}
       </Body>
     </Container>
-  )
+  );
 }
 
-const Container = styled('div')`
+const Container = styled("div")`
   display: flex;
   background-color: #ffffff;
   flex-direction: column;
@@ -152,52 +152,52 @@ const Container = styled('div')`
   height: 100%;
   padding-right: 8px;
   margin-bottom: 100px;
-`
-const Header = styled('div')`
+`;
+const Header = styled("div")`
   padding: 1rem;
   align-items: center;
-`
-const HeaderSelectCoin = styled('div')`
+`;
+const HeaderSelectCoin = styled("div")`
   display: flex;
   justify-content: space-between;
   padding: 1rem;
   align-items: center;
-`
-const HeaderSearchCoin = styled('div')`
+`;
+const HeaderSearchCoin = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
-const Body = styled('div')`
+`;
+const Body = styled("div")`
   overflow: scroll;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-`
+`;
 
-const HeaderTitle = styled('div')`
+const HeaderTitle = styled("div")`
   font-size: 1.5rem;
-`
+`;
 
-const HeaderSelectBox = styled('div')`
+const HeaderSelectBox = styled("div")`
   display: flex;
   align-items: center;
-`
+`;
 
-const HeaderSelectBoxContent = styled('div')`
+const HeaderSelectBoxContent = styled("div")`
   font-size: 0.8rem;
-`
+`;
 
-const SelectCoinInnerLayer = styled('div')`
+const SelectCoinInnerLayer = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   width: 100%;
-`
+`;
 
-const SelectCoinInnerFont = styled('div')`
+const SelectCoinInnerFont = styled("div")`
   align-items: center;
   font-size: 1rem;
-`
+`;

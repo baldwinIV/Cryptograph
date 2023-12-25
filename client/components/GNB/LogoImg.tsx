@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import logoOnlyWhite from './logo-only-white.svg'
-import logoWhite from './logo-white.svg'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import logoOnlyWhite from "./logo-only-white.svg";
+import logoWhite from "./logo-white.svg";
 
 interface LogoImgProps {
-  isMobile: boolean
+  isMobile: boolean;
 }
 
 export default function LogoImg({ isMobile }: LogoImgProps) {
-  const [checkMobile, setCheckMobile] = useState<boolean>(true)
+  const [checkMobile, setCheckMobile] = useState<boolean>(true);
   useEffect(() => {
-    setCheckMobile(isMobile)
-  }, [isMobile])
+    setCheckMobile(isMobile);
+  }, [isMobile]);
 
   const MobileImageStyle = {
-    paddingRight: '16px',
-    display: checkMobile ? 'grid' : 'none'
-  }
+    paddingRight: "16px",
+    display: checkMobile ? "grid" : "none"
+  };
   const DesktopImageStyle = {
-    margin: '0px 16px 0px 32px',
-    display: checkMobile ? 'none' : 'grid'
-  }
+    margin: "0px 16px 0px 32px",
+    display: checkMobile ? "none" : "grid"
+  };
 
   return (
     <>
@@ -42,5 +42,5 @@ export default function LogoImg({ isMobile }: LogoImgProps) {
         />
       </Link>
     </>
-  )
+  );
 }

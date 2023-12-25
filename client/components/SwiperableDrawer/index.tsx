@@ -1,19 +1,19 @@
-import Box from '@mui/material/Box'
-import SwipeableDrawer from '@mui/material/SwipeableDrawer'
-import Fab from '@mui/material/Fab'
-import NavigationIcon from '@mui/icons-material/Navigation'
+import Box from "@mui/material/Box";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Fab from "@mui/material/Fab";
+import NavigationIcon from "@mui/icons-material/Navigation";
 import {
   Dispatch,
   ReactNode,
   SetStateAction,
   MouseEvent,
   KeyboardEvent
-} from 'react'
+} from "react";
 interface SwipeableTemporaryDrawerProps {
-  buttonLabel: string
-  isDrawerOpened: boolean
-  setIsDrawerOpened: Dispatch<SetStateAction<boolean>>
-  children: ReactNode
+  buttonLabel: string;
+  isDrawerOpened: boolean;
+  setIsDrawerOpened: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
 }
 
 export default function SwipeableTemporaryDrawer({
@@ -26,14 +26,14 @@ export default function SwipeableTemporaryDrawer({
     (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
       if (
         event &&
-        event.type === 'keydown' &&
-        ((event as KeyboardEvent).key === 'Tab' ||
-          (event as KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as KeyboardEvent).key === "Tab" ||
+          (event as KeyboardEvent).key === "Shift")
       ) {
-        return
+        return;
       }
-      setIsDrawerOpened(open)
-    }
+      setIsDrawerOpened(open);
+    };
 
   return (
     <div>
@@ -49,7 +49,7 @@ export default function SwipeableTemporaryDrawer({
         {buttonLabel}
       </Fab>
       <SwipeableDrawer
-        anchor={'bottom'}
+        anchor={"bottom"}
         open={isDrawerOpened}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
@@ -57,11 +57,11 @@ export default function SwipeableTemporaryDrawer({
         <Box sx={style}>{children}</Box>
       </SwipeableDrawer>
     </div>
-  )
+  );
 }
 
 const style = {
-  height: '400px',
-  maxHeight: '80vh', //400px보다 화면 높이가 작을경우, 최대 값 정의, 100vh면 drawer를 나갈 수 없다.. 적당히 80vh 설정
-  width: '100%'
-}
+  height: "400px",
+  maxHeight: "80vh", //400px보다 화면 높이가 작을경우, 최대 값 정의, 100vh면 drawer를 나갈 수 없다.. 적당히 80vh 설정
+  width: "100%"
+};

@@ -6,32 +6,33 @@ async function getUpbitMarketCode() {
   const marketCodes = await axios({
     method: "get",
     baseURL: "https://api.upbit.com",
-    url: "/v1/market/all",
-  }).then((response) => response.data);
+    url: "/v1/market/all"
+  }).then(response => response.data);
   return marketCodes.reduce((acc, curr) => {
-    const [moneyType, coinCode] = curr.market.split("-");
-    if (moneyType === "KRW") {
-      acc.push({
-        code: coinCode,
-        name: curr.english_name,
-        name_kr: curr.korean_name,
-      });
-    }
+    const [moneyType, ticker] = curr.market.split("-");
+    if (moneyType !== "KRW") return acc;
+    acc.push({
+      code: ticker,
+      name: curr.english_name,
+      name_kr: curr.korean_name
+    });
     return acc;
   }, []);
 }
 
 // 업비트에서 실시간 시세정보 가져오는 함수
+// try-catch 에러 예외 처리
 async function getUpbitMarketDatas(marketCodes) {
   const responseBody = await axios({
     method: "get",
     baseURL: "https://api.upbit.com",
-    url: `v1/ticker?markets=${marketCodes}`,
-  }).then((response) => response.data);
+    url: `v1/ticker?markets=${marketCodes}`
+  }).then(response => response.data);
   return responseBody;
 }
 
 // 코인마켓캡에서 코인정보 가져오는 함수 (시가총액, 최대발급량, 현재발급량 필요)
+// try-catch 에러 예외 처리
 async function getCoinData() {
   const responseBody = await axios({
     method: "get",
@@ -39,9 +40,9 @@ async function getCoinData() {
     url: "v1/cryptocurrency/listings/latest?start=1&limit=2000&convert=KRW",
     headers: {
       Accept: "application/json",
-      "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY,
-    },
-  }).then((response) => response.data);
+      "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY
+    }
+  }).then(response => response.data);
   return responseBody.data;
 }
 
@@ -58,9 +59,10 @@ async function getCoinMetaData(coinIds) {
     url: `/v2/cryptocurrency/info?id=${coinIds}`,
     headers: {
       Accept: "application/json",
-      "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY,
-    },
-  }).then((response) => response.data);
+      "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY
+    }
+  }).then(response => response.data);
+  console.log(responseBody.data);
   return responseBody.data;
 }
 
@@ -68,5 +70,5 @@ module.exports = {
   getUpbitMarketCode,
   getCoinData,
   getCoinMetaData,
-  getUpbitMarketDatas,
+  getUpbitMarketDatas
 };

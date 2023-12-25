@@ -1,7 +1,7 @@
-import { Children, ReactNode } from 'react'
+import { Children, ReactNode } from "react";
 
 interface InfoSidebarContainerProps {
-  children: ReactNode
+  children: ReactNode;
 }
 export default function InfoSidebarContainer({
   children
@@ -9,8 +9,8 @@ export default function InfoSidebarContainer({
   return (
     <>
       {Children.map(children, child => {
-        return child
+        return child;
       })}
     </>
-  )
+  );
 }

@@ -1,40 +1,40 @@
-import { styled, Typography, useTheme } from '@mui/material'
-import { TabProps } from '@/components/TabContainer'
-import Image from 'next/image'
-import { CoinPrice } from '@/types/CoinPriceTypes'
-import Link from 'next/link'
-import { useState, FunctionComponent, memo, useCallback } from 'react'
+import { styled, Typography, useTheme } from "@mui/material";
+import { TabProps } from "@/components/TabContainer";
+import Image from "next/image";
+import { CoinPrice } from "@/types/CoinPriceTypes";
+import Link from "next/link";
+import { useState, FunctionComponent, memo, useCallback } from "react";
 //코인 실시간 정보
 
 const sortTypeArr = [
-  'signed_change_rate',
-  'acc_trade_price_24h',
-  'price'
-] as const
-type sortType = typeof sortTypeArr[number]
+  "signed_change_rate",
+  "acc_trade_price_24h",
+  "price"
+] as const;
+type sortType = typeof sortTypeArr[number];
 
 interface SortManual {
-  toSort: sortType
-  sortDirection: boolean
+  toSort: sortType;
+  sortDirection: boolean;
 }
 
 export default function RealTimeCoinPrice(props: TabProps) {
   const [sortManual, setSortManual] = useState<SortManual>({
-    toSort: 'acc_trade_price_24h',
+    toSort: "acc_trade_price_24h",
     sortDirection: true
-  })
+  });
 
   const sortHandler = useCallback(
     (clicked: sortType) => {
       setSortManual(prev => {
         if (prev.toSort === clicked) {
-          return { toSort: clicked, sortDirection: !prev.sortDirection }
+          return { toSort: clicked, sortDirection: !prev.sortDirection };
         }
-        return { toSort: clicked, sortDirection: true }
-      })
+        return { toSort: clicked, sortDirection: true };
+      });
     },
     [setSortManual]
-  )
+  );
 
   return (
     <Container>
@@ -46,56 +46,56 @@ export default function RealTimeCoinPrice(props: TabProps) {
               return (
                 (sortManual.sortDirection ? 1 : -1) *
                 (b[sortManual.toSort] - a[sortManual.toSort])
-              )
+              );
             })
             .map(coinPrice => (
               <MemoCoinPriceTab key={coinPrice.name} coinPrice={coinPrice} />
             ))}
       </CoinPriceContainer>
     </Container>
-  )
+  );
 }
 
 interface CoinPriceTabProps {
-  coinPrice: CoinPrice
+  coinPrice: CoinPrice;
 }
 
 const CoinPriceTab: FunctionComponent<CoinPriceTabProps> = ({ coinPrice }) => {
-  const theme = useTheme()
-  const isMinus = coinPrice.signed_change_price <= 0
+  const theme = useTheme();
+  const isMinus = coinPrice.signed_change_price <= 0;
   const textColor =
     coinPrice.signed_change_price === 0
-      ? 'black'
+      ? "black"
       : coinPrice.signed_change_price < 0
       ? theme.palette.custom.blue
-      : theme.palette.custom.red
+      : theme.palette.custom.red;
   return (
     <Link
       href={`/detail/${coinPrice.name}`}
-      style={{ textDecoration: 'none', color: 'black' }}
+      style={{ textDecoration: "none", color: "black" }}
     >
       <CoinPriceDiv>
         <Image src={coinPrice.logo} alt="" width={40} height={40} />
         <div className="name">
-          <Typography sx={{ margin: 0, fontSize: '12px', fontWeight: 'bold' }}>
+          <Typography sx={{ margin: 0, fontSize: "12px", fontWeight: "bold" }}>
             {coinPrice.name_kr}
           </Typography>
-          <Typography sx={{ margin: 0, fontSize: '12px' }}>
+          <Typography sx={{ margin: 0, fontSize: "12px" }}>
             {coinPrice.name}
           </Typography>
         </div>
         <div className="price">
-          <Typography sx={{ color: textColor, fontSize: '12px' }}>
+          <Typography sx={{ color: textColor, fontSize: "12px" }}>
             {coinPrice.price.toLocaleString()}
           </Typography>
         </div>
         <div className="yesterday">
-          <Typography sx={{ color: textColor, margin: 0, fontSize: '12px' }}>
-            {(isMinus ? '' : '+') +
+          <Typography sx={{ color: textColor, margin: 0, fontSize: "12px" }}>
+            {(isMinus ? "" : "+") +
               coinPrice.signed_change_price.toLocaleString()}
           </Typography>
-          <Typography sx={{ color: textColor, fontSize: '12px' }}>
-            {(isMinus ? '' : '+') +
+          <Typography sx={{ color: textColor, fontSize: "12px" }}>
+            {(isMinus ? "" : "+") +
               Math.floor(coinPrice.signed_change_rate * 10000) / 100}
             %
           </Typography>
@@ -105,13 +105,13 @@ const CoinPriceTab: FunctionComponent<CoinPriceTabProps> = ({ coinPrice }) => {
         </div>
       </CoinPriceDiv>
     </Link>
-  )
-}
+  );
+};
 
-const MemoCoinPriceTab = memo(CoinPriceTab)
+const MemoCoinPriceTab = memo(CoinPriceTab);
 
 interface CoinPriceHeaderProps {
-  sortHandler: (clicked: sortType) => void
+  sortHandler: (clicked: sortType) => void;
 }
 
 const CoinPriceHeader: FunctionComponent<CoinPriceHeaderProps> = ({
@@ -124,7 +124,7 @@ const CoinPriceHeader: FunctionComponent<CoinPriceHeaderProps> = ({
         <div
           className="price"
           onClick={() => {
-            sortHandler('price')
+            sortHandler("price");
           }}
         >
           현재가
@@ -132,7 +132,7 @@ const CoinPriceHeader: FunctionComponent<CoinPriceHeaderProps> = ({
         <div
           className="yesterday"
           onClick={() => {
-            sortHandler('signed_change_rate')
+            sortHandler("signed_change_rate");
           }}
         >
           전일대비
@@ -140,31 +140,31 @@ const CoinPriceHeader: FunctionComponent<CoinPriceHeaderProps> = ({
         <div
           className="amount"
           onClick={() => {
-            sortHandler('acc_trade_price_24h')
+            sortHandler("acc_trade_price_24h");
           }}
         >
           거래대금
         </div>
       </div>
     </Header>
-  )
-}
+  );
+};
 
-const MemoCoinPriceHeader = memo(CoinPriceHeader)
+const MemoCoinPriceHeader = memo(CoinPriceHeader);
 
-const Container = styled('div')`
+const Container = styled("div")`
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
   padding: 8px;
   background-color: #ffffff;
-  ${props => props.theme.breakpoints.down('tablet')} {
+  ${props => props.theme.breakpoints.down("tablet")} {
     height: 100%;
   }
-`
+`;
 
-const Header = styled('div')`
+const Header = styled("div")`
   width: 100%;
   font-size: 13px;
   font-weight: bold;
@@ -197,9 +197,9 @@ const Header = styled('div')`
       }
     }
   }
-`
+`;
 
-const CoinPriceContainer = styled('div')`
+const CoinPriceContainer = styled("div")`
   flex: 1 1 auto;
   margin-top: 8px;
   width: 100%;
@@ -207,9 +207,9 @@ const CoinPriceContainer = styled('div')`
   display: flex;
   flex-direction: column;
   gap: 5px;
-`
+`;
 
-const CoinPriceDiv = styled('div')`
+const CoinPriceDiv = styled("div")`
   display: flex;
   width: 100%;
   height: 50px;
@@ -239,8 +239,8 @@ const CoinPriceDiv = styled('div')`
     background-color: #eee6e6;
     transition: 0.5s;
   }
-`
+`;
 
 const transPrice = (price: number): string => {
-  return Math.floor(price / 1000000).toLocaleString() + '백만'
-}
+  return Math.floor(price / 1000000).toLocaleString() + "백만";
+};

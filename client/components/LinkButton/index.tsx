@@ -1,24 +1,24 @@
-import { Button } from '@mui/material'
-import Link from 'next/link'
-import { memo } from 'react'
+import { Button } from "@mui/material";
+import Link from "next/link";
+import { memo } from "react";
 
 interface ChartButtonProps {
-  goto: string
-  content: string
-  style?: object
+  goto: string;
+  content: string;
+  style?: object;
 }
-const LinkStyle = { textDecoration: 'none', width: '100%', marginTop: '8px' }
+const LinkStyle = { textDecoration: "none", width: "100%", marginTop: "8px" };
 
 function Chartbutton({
-  goto = '/',
-  content = 'default',
+  goto = "/",
+  content = "default",
   style = {}
 }: ChartButtonProps) {
   return (
     <Link href={goto} style={LinkStyle}>
       <Button
         sx={{
-          width: '100%',
+          width: "100%",
 
           ...style
         }}
@@ -28,7 +28,7 @@ function Chartbutton({
         {content}
       </Button>
     </Link>
-  )
+  );
 }
 
-export default memo(Chartbutton)
+export default memo(Chartbutton);
