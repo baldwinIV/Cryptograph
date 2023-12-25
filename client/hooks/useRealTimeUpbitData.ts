@@ -39,7 +39,7 @@ export const useRealTimeUpbitData = (
     return () => {
       closeWS();
     };
-  }, []);
+  }, [priceInfo]);
 
   useEffect(() => {
     if (!socket) {
@@ -81,9 +81,7 @@ export const useRealTimeUpbitData = (
 };
 
 function connectWS(priceInfo: CoinPriceObj) {
-  if (socket !== undefined) {
-    socket.close();
-  }
+  closeWS();
 
   socket = new WebSocket('wss://api.upbit.com/websocket/v1');
   socket.binaryType = 'arraybuffer';
@@ -101,17 +99,13 @@ function connectWS(priceInfo: CoinPriceObj) {
 
 // 웹소켓 연결 해제
 function closeWS() {
-  if (socket !== undefined) {
-    socket.close();
-    socket = undefined;
-  }
+  if (socket === undefined || socket.readyState !== WebSocket.OPEN) return;
+  socket.close();
 }
 
 // 웹소켓 요청
 function filterRequest(filter: string) {
-  if (socket == undefined) {
-    return;
-  }
+  if (socket === undefined || socket.readyState !== WebSocket.OPEN) return;
   socket.send(filter);
 }
 
