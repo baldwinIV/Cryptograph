@@ -1,5 +1,5 @@
-import { CandleData, ChartPeriod, TreeMapData } from "@/types/ChartTypes";
-import { DEFAULT_CANDLE_COUNT } from "@/constants/ChartConstants";
+import { CandleData, ChartPeriod, TreeMapData } from '@/types/ChartTypes';
+import { DEFAULT_CANDLE_COUNT } from '@/constants/ChartConstants';
 export async function getCandleDataArray(
   period: ChartPeriod,
   market: string,
@@ -11,18 +11,18 @@ export async function getCandleDataArray(
     res = await fetch(
       `https://api.upbit.com/v1/candles/${period}?market=KRW-${market}&count=${count}`,
       {
-        method: "GET",
-        headers: { accept: "application/json" }
+        method: 'GET',
+        headers: { accept: 'application/json' }
       }
     );
   } else {
     res = await fetch(
       `https://api.upbit.com/v1/candles/${period}?market=KRW-${market}&to=${
-        lastTime + "Z"
+        lastTime + 'Z'
       }&count=${count}`,
       {
-        method: "GET",
-        headers: { accept: "application/json" }
+        method: 'GET',
+        headers: { accept: 'application/json' }
       }
     );
   }
@@ -40,8 +40,8 @@ export async function getTreeMapDataArray(
     //market -> markets
     `https://api.upbit.com/v1/ticker?markets=${market}&count=1`,
     {
-      method: "GET",
-      headers: { accept: "application/json" }
+      method: 'GET',
+      headers: { accept: 'application/json' }
     }
   );
   const data: TreeMapData[] = await res.json();

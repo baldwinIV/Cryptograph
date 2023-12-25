@@ -1,9 +1,9 @@
-import { useMediaQuery, useTheme } from "@mui/material";
-import { styled } from "@mui/material";
-import Image from "next/image";
-import dogeImage from "@/pages/doge.svg";
+import { useMediaQuery, useTheme } from '@mui/material';
+import { styled } from '@mui/material';
+import Image from 'next/image';
+import dogeImage from '@/pages/doge.svg';
 
-const Container = styled("div")`
+const Container = styled('div')`
   width: 100%;
   height: 100%;
   display: flex;
@@ -23,7 +23,7 @@ const Container = styled("div")`
 `;
 
 export function NoSelectedCoinAlertView() {
-  const isMobile = useMediaQuery(useTheme().breakpoints.down("tablet"));
+  const isMobile = useMediaQuery(useTheme().breakpoints.down('tablet'));
   return (
     <Container>
       <h1>선택된 코인이 없습니다..</h1>
@@ -36,7 +36,7 @@ export function NoSelectedCoinAlertView() {
       <p>
         {isMobile
           ? '하단의 "차트 정보 더보기" 버튼을 클릭하여 차트에 보여줄 코인들을 선택해 주세요'
-          : "좌측의 사이드바에서 차트에 보여줄 코인들을 선택해 주세요"}
+          : '좌측의 사이드바에서 차트에 보여줄 코인들을 선택해 주세요'}
       </p>
     </Container>
   );

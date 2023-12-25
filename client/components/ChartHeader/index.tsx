@@ -1,15 +1,15 @@
-import { styled, useTheme } from "@mui/material/styles";
-import { CandleChartOption, ChartPeriod } from "@/types/ChartTypes";
-import { Dispatch, SetStateAction } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { ChartPeriodList } from "@/types/ChartTypes";
-import { CoinPrice } from "@/types/CoinPriceTypes";
-import Image from "next/image";
-import { Typography, useMediaQuery } from "@mui/material";
+import { styled, useTheme } from '@mui/material/styles';
+import { CandleChartOption, ChartPeriod } from '@/types/ChartTypes';
+import { Dispatch, SetStateAction } from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { ChartPeriodList } from '@/types/ChartTypes';
+import { CoinPrice } from '@/types/CoinPriceTypes';
+import Image from 'next/image';
+import { Typography, useMediaQuery } from '@mui/material';
 
 interface ChartHeaderProps {
   chartOption: CandleChartOption;
@@ -40,12 +40,12 @@ function HeaderCoinInfo(props: HeaderCoinPriceInfoProps) {
   const isMinus = coinPrice.signed_change_price <= 0;
   const textColor =
     coinPrice.signed_change_price === 0
-      ? "black"
+      ? 'black'
       : coinPrice.signed_change_price < 0
       ? theme.palette.custom.blue
       : theme.palette.custom.red;
   const isSmallDesktop = useMediaQuery(
-    theme.breakpoints.between("tablet", "desktop")
+    theme.breakpoints.between('tablet', 'desktop')
   );
   return (
     <HeaderCoinInfoContainer>
@@ -57,26 +57,26 @@ function HeaderCoinInfo(props: HeaderCoinPriceInfoProps) {
       />
       <div className="name">
         <span>
-          <span className="big">{coinPrice.name_kr}</span>{" "}
-          {coinPrice.name + "/KRW"}
+          <span className="big">{coinPrice.name_kr}</span>{' '}
+          {coinPrice.name + '/KRW'}
         </span>
       </div>
       <div className="price">
         <Typography
-          sx={{ color: textColor, fontSize: isSmallDesktop ? "8px" : "12px" }}
+          sx={{ color: textColor, fontSize: isSmallDesktop ? '8px' : '12px' }}
         >
-          {coinPrice.price.toLocaleString() + "KRW"}
+          {coinPrice.price.toLocaleString() + 'KRW'}
         </Typography>
         <Typography
-          sx={{ color: textColor, fontSize: isSmallDesktop ? "8px" : "12px" }}
+          sx={{ color: textColor, fontSize: isSmallDesktop ? '8px' : '12px' }}
         >
           {`${
-            (isMinus ? "" : "+") +
+            (isMinus ? '' : '+') +
             coinPrice.signed_change_price.toLocaleString() +
-            "KRW"
+            'KRW'
           } 
             ${
-              (isMinus ? "" : "+") +
+              (isMinus ? '' : '+') +
               Math.floor(coinPrice.signed_change_rate * 10000) / 100
             }`}
           %
@@ -94,7 +94,7 @@ interface ChartPeriodSelectorProps {
 function ChartPeriodSelector(props: ChartPeriodSelectorProps) {
   const theme = useTheme();
   const isSmallDesktop = useMediaQuery(
-    theme.breakpoints.between("tablet", "desktop")
+    theme.breakpoints.between('tablet', 'desktop')
   );
   const handleChange = (event: SelectChangeEvent) => {
     props.selectedSetter(prev => {
@@ -107,8 +107,8 @@ function ChartPeriodSelector(props: ChartPeriodSelectorProps) {
   return (
     <Box sx={{ width: 200 }}>
       <FormControl
-        sx={{ width: "100%", height: "100%" }}
-        size={isSmallDesktop ? "small" : "medium"}
+        sx={{ width: '100%', height: '100%' }}
+        size={isSmallDesktop ? 'small' : 'medium'}
       >
         <InputLabel id="demo-simple-select-label">분봉 선택</InputLabel>
         <Select
@@ -131,7 +131,7 @@ function ChartPeriodSelector(props: ChartPeriodSelectorProps) {
   );
 }
 
-const ChartHeaderContainer = styled("div")`
+const ChartHeaderContainer = styled('div')`
   display: flex;
   width: 100%;
   height: 10%;
@@ -139,13 +139,13 @@ const ChartHeaderContainer = styled("div")`
   box-sizing: border-box;
   justify-content: space-around;
   align-items: center;
-  ${props => props.theme.breakpoints.down("tablet")} {
+  ${props => props.theme.breakpoints.down('tablet')} {
     flex-direction: column;
     height: 150px;
   }
 `;
 
-const HeaderCoinInfoContainer = styled("div")`
+const HeaderCoinInfoContainer = styled('div')`
   display: flex;
   width: 50%;
   gap: 20px;
@@ -160,11 +160,11 @@ const HeaderCoinInfoContainer = styled("div")`
       font-weight: 600;
     }
   }
-  ${props => props.theme.breakpoints.down("tablet")} {
+  ${props => props.theme.breakpoints.down('tablet')} {
     width: 100%;
     justify-content: center;
   }
-  ${props => props.theme.breakpoints.between("tablet", "desktop")} {
+  ${props => props.theme.breakpoints.between('tablet', 'desktop')} {
     gap: 5px;
     & > div.name {
       & span {

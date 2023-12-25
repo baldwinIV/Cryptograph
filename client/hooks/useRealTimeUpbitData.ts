@@ -1,14 +1,14 @@
-import { CandleChartOption, CandleData } from "@/types/ChartTypes";
-import { useEffect, useState, useRef, Dispatch, SetStateAction } from "react";
-import { ChartPeriod } from "@/types/ChartTypes";
-import { getCandleDataArray } from "@/utils/upbitManager";
-import { transDate } from "@/utils/dateManager";
+import { CandleChartOption, CandleData } from '@/types/ChartTypes';
+import { useEffect, useState, useRef, Dispatch, SetStateAction } from 'react';
+import { ChartPeriod } from '@/types/ChartTypes';
+import { getCandleDataArray } from '@/utils/upbitManager';
+import { transDate } from '@/utils/dateManager';
 import {
   CoinPrice,
   CoinPriceObj,
   SocketTickerData
-} from "@/types/CoinPriceTypes";
-import useInterval from "@/hooks/useInterval";
+} from '@/types/CoinPriceTypes';
+import useInterval from '@/hooks/useInterval';
 let socket: WebSocket | undefined;
 
 export const useRealTimeUpbitData = (
@@ -43,17 +43,17 @@ export const useRealTimeUpbitData = (
 
   useEffect(() => {
     if (!socket) {
-      console.error("분봉 설정 관련 error");
+      console.error('분봉 설정 관련 error');
       location.reload();
       return;
     }
     socket.onmessage = function (e) {
-      const enc = new TextDecoder("utf-8");
+      const enc = new TextDecoder('utf-8');
       const arr = new Uint8Array(e.data);
       const str_d = enc.decode(arr);
       const d = JSON.parse(str_d);
-      if (d.type == "ticker") {
-        const code = d.code.split("-")[1];
+      if (d.type == 'ticker') {
+        const code = d.code.split('-')[1];
         if (code === market) {
           setRealtimeCandleData(prevData => updateData(prevData, d, period));
         }
@@ -68,7 +68,7 @@ export const useRealTimeUpbitData = (
         200
       );
       if (fetched === null) {
-        console.error("코인 쿼리 실패, 404에러");
+        console.error('코인 쿼리 실패, 404에러');
         return;
       }
       setRealtimeCandleData(fetched);
@@ -85,13 +85,13 @@ function connectWS(priceInfo: CoinPriceObj) {
     socket.close();
   }
 
-  socket = new WebSocket("wss://api.upbit.com/websocket/v1");
-  socket.binaryType = "arraybuffer";
+  socket = new WebSocket('wss://api.upbit.com/websocket/v1');
+  socket.binaryType = 'arraybuffer';
 
   socket.onopen = function () {
     const markets = Object.keys(priceInfo)
       .map(code => `"KRW-${code}"`)
-      .join(",");
+      .join(',');
     filterRequest(`[{"ticket":"test"},{"type":"ticker","codes":[${markets}]}]`);
   };
   socket.onclose = function () {

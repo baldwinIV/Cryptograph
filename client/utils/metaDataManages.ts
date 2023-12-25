@@ -1,4 +1,4 @@
-import { CoinMetaData, MarketCapInfo } from "@/types/CoinDataTypes";
+import { CoinMetaData, MarketCapInfo } from '@/types/CoinDataTypes';
 
 export async function getCoinMetaData(
   coinCode: string
@@ -6,7 +6,7 @@ export async function getCoinMetaData(
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/coin-info/${coinCode}`,
     {
-      method: "GET"
+      method: 'GET'
     }
   );
   if (response.status !== 200) {

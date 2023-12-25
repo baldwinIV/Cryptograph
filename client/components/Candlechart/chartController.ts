@@ -5,25 +5,25 @@ import {
   CANDLE_COLOR_RED,
   CANDLE_COLOR_BLUE,
   DEFAULT_POINTER_DATA
-} from "@/constants/ChartConstants";
-import { RefElementSize } from "@/hooks/useRefElementSize";
+} from '@/constants/ChartConstants';
+import { RefElementSize } from '@/hooks/useRefElementSize';
 import {
   CandleData,
   ChartPeriod,
   CandleChartRenderOption,
   PointerData
-} from "@/types/ChartTypes";
+} from '@/types/ChartTypes';
 import {
   getYAxisScale,
   getXAxisScale,
   updateCurrentPrice,
   handleMouseEvent,
   getVolumeHeightScale
-} from "@/utils/chartManager";
-import * as d3 from "d3";
-import { throttle } from "lodash";
-import { RefObject, Dispatch, SetStateAction } from "react";
-import { mobileEventClosure } from "./mobileTouchEventClosure";
+} from '@/utils/chartManager';
+import * as d3 from 'd3';
+import { throttle } from 'lodash';
+import { RefObject, Dispatch, SetStateAction } from 'react';
+import { mobileEventClosure } from './mobileTouchEventClosure';
 
 export function initCandleChart(
   svgRef: RefObject<SVGSVGElement>,
@@ -52,21 +52,21 @@ function initCandleChartSVG(
   const chartAreaYsize = chartContainerYsize - CHART_X_AXIS_MARGIN;
   //margin값도 크기에 맞춰 변수화 시켜야함.
   const chartContainer = d3.select(svgRef.current);
-  chartContainer.attr("width", chartContainerXsize);
-  chartContainer.attr("height", chartContainerYsize);
-  const chartArea = chartContainer.select("svg#chart-area");
-  chartArea.attr("width", chartAreaXsize);
-  chartArea.attr("height", chartAreaYsize);
+  chartContainer.attr('width', chartContainerXsize);
+  chartContainer.attr('height', chartContainerYsize);
+  const chartArea = chartContainer.select('svg#chart-area');
+  chartArea.attr('width', chartAreaXsize);
+  chartArea.attr('height', chartAreaYsize);
   // xAxis초기값 설정
   chartContainer
-    .select("svg#x-axis-container")
-    .attr("width", chartAreaXsize)
-    .attr("height", chartAreaYsize + 20);
+    .select('svg#x-axis-container')
+    .attr('width', chartAreaXsize)
+    .attr('height', chartAreaYsize + 20);
   // currentPrice초기값 설정
-  chartContainer.select("svg#current-price").attr("height", chartAreaYsize);
+  chartContainer.select('svg#current-price').attr('height', chartAreaYsize);
   // text 위치설정 매직넘버? 반응형 고려하면 변수화도 고려되어야할듯
-  chartContainer.select("text#price-info").attr("x", 20).attr("y", 20);
-  chartContainer.select("svg#mouse-pointer-UI").attr("pointer-events", "none");
+  chartContainer.select('text#price-info').attr('x', 20).attr('y', 20);
+  chartContainer.select('svg#mouse-pointer-UI').attr('pointer-events', 'none');
 }
 
 // let prevDistance = -1
@@ -94,11 +94,11 @@ export function addEventsToChart(
     .call(
       d3
         .drag<SVGSVGElement, CandleData>()
-        .on("start", start)
-        .on("drag", drag)
-        .on("end", end)
+        .on('start', start)
+        .on('drag', drag)
+        .on('end', end)
     )
-    .on("wheel", (e: WheelEvent) => {
+    .on('wheel', (e: WheelEvent) => {
       e.preventDefault();
       optionSetter((prev: CandleChartRenderOption) => {
         const newCandleWidth = Math.min(
@@ -139,7 +139,7 @@ export function addEventsToChart(
       });
     });
   d3.select<SVGSVGElement, CandleData>(svgRef.current).on(
-    "mousemove",
+    'mousemove',
     throttle((event: MouseEvent) => {
       handleMouseEvent(
         event,
@@ -150,8 +150,8 @@ export function addEventsToChart(
     }, 50)
   );
   d3.select<SVGSVGElement, null>(svgRef.current)
-    .select("svg#chart-area")
-    .on("mouseleave", () => {
+    .select('svg#chart-area')
+    .on('mouseleave', () => {
       pointerPositionSetter(DEFAULT_POINTER_DATA);
     });
 }
@@ -161,15 +161,15 @@ export function translateCandleChart(
   svgRef: RefObject<SVGSVGElement>,
   translateX: number
 ) {
-  const chartArea = d3.select(svgRef.current).select("svg#chart-area");
-  const $xAxis = d3.select(svgRef.current).select("g#x-axis");
-  chartArea.selectAll("g").attr("transform", `translate(${translateX})`);
-  if (!$xAxis.attr("transform")) {
+  const chartArea = d3.select(svgRef.current).select('svg#chart-area');
+  const $xAxis = d3.select(svgRef.current).select('g#x-axis');
+  chartArea.selectAll('g').attr('transform', `translate(${translateX})`);
+  if (!$xAxis.attr('transform')) {
     return;
   }
   $xAxis.attr(
-    "transform",
-    $xAxis.attr("transform").replace(/\(([0-9.\-]*),/, `(${translateX},`)
+    'transform',
+    $xAxis.attr('transform').replace(/\(([0-9.\-]*),/, `(${translateX},`)
   );
   return;
 }
@@ -189,7 +189,7 @@ export function updateCandleChart(
   const chartAreaYsize = chartContainerYsize - CHART_X_AXIS_MARGIN;
   const candleWidth = option.candleWidth;
   const chartContainer = d3.select(svgRef.current);
-  const chartArea = chartContainer.select("svg#chart-area");
+  const chartArea = chartContainer.select('svg#chart-area');
   const yAxisScale = getYAxisScale(
     data.slice(
       option.renderStartDataIndex,
@@ -225,7 +225,7 @@ export function updateCandleChart(
   updateCurrentPrice(yAxisScale, data, option, chartAreaXsize, chartAreaYsize);
 
   chartArea
-    .selectAll<SVGSVGElement, CandleData>("g")
+    .selectAll<SVGSVGElement, CandleData>('g')
     .data(
       data.slice(
         option.renderStartDataIndex,
@@ -234,7 +234,7 @@ export function updateCandleChart(
     )
     .join(
       enter => {
-        const $g = enter.append("g");
+        const $g = enter.append('g');
         /*  $g.append('rect').classed('volumeRect', true)
         $g = placeVolumeRect($g, chartAreaXsize, candleWidth, yAxisScale) */
         // 거래량, 개발예정, 성능 문제로 보류
@@ -259,9 +259,9 @@ export function updateCandleChart(
       },
       update => {
         update
-          .select("rect.candleRect")
-          .attr("width", candleWidth * 0.6)
-          .attr("height", d =>
+          .select('rect.candleRect')
+          .attr('width', candleWidth * 0.6)
+          .attr('height', d =>
             Math.abs(yAxisScale(d.trade_price) - yAxisScale(d.opening_price)) <=
             0
               ? 1
@@ -270,39 +270,39 @@ export function updateCandleChart(
                 )
           )
           .attr(
-            "x",
+            'x',
             d =>
               xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth * 0.8
           )
-          .attr("y", d =>
+          .attr('y', d =>
             Math.min(yAxisScale(d.trade_price), yAxisScale(d.opening_price))
           )
-          .attr("fill", d =>
+          .attr('fill', d =>
             d.opening_price < d.trade_price
               ? CANDLE_COLOR_RED
               : CANDLE_COLOR_BLUE
           );
         update
-          .select("rect.fullRect")
-          .attr("width", candleWidth)
-          .attr("height", chartAreaYsize)
+          .select('rect.fullRect')
+          .attr('width', candleWidth)
+          .attr('height', chartAreaYsize)
           .attr(
-            "x",
+            'x',
             d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth
           )
-          .attr("y", 0);
+          .attr('y', 0);
         update
-          .select("line")
+          .select('line')
           .attr(
-            "x1",
+            'x1',
             d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth / 2
           )
           .attr(
-            "x2",
+            'x2',
             d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth / 2
           )
-          .attr("y1", d => yAxisScale(d.low_price))
-          .attr("y2", d => yAxisScale(d.high_price));
+          .attr('y1', d => yAxisScale(d.low_price))
+          .attr('y2', d => yAxisScale(d.high_price));
         // update
         //   .select('rect.volumeRect')
         //   .attr('width', candleWidth * 0.6)
@@ -331,18 +331,18 @@ function UpdateAxis(
   translateX: number
 ) {
   chartContainer
-    .select<SVGSVGElement>("g#y-axis")
-    .attr("transform", `translate(${chartAreaXsize},0)`)
+    .select<SVGSVGElement>('g#y-axis')
+    .attr('transform', `translate(${chartAreaXsize},0)`)
     .call(d3.axisRight(yAxisScale).tickSizeInner(-1 * chartAreaXsize))
     .call(g => {
-      g.selectAll(".tick line").attr("stroke", CANDLE_CHART_GRID_COLOR);
-      g.selectAll(".tick text")
-        .attr("stroke", "black")
-        .attr("font-size", "12px");
+      g.selectAll('.tick line').attr('stroke', CANDLE_CHART_GRID_COLOR);
+      g.selectAll('.tick text')
+        .attr('stroke', 'black')
+        .attr('font-size', '12px');
     });
   chartContainer
-    .select<SVGSVGElement>("g#x-axis")
-    .attr("transform", `translate(${translateX},${chartAreaYsize})`)
+    .select<SVGSVGElement>('g#x-axis')
+    .attr('transform', `translate(${translateX},${chartAreaYsize})`)
     .call(
       d3
         .axisBottom(xAxisScale)
@@ -351,10 +351,10 @@ function UpdateAxis(
         .ticks(5)
     )
     .call(g => {
-      g.selectAll(".tick line").attr("stroke", CANDLE_CHART_GRID_COLOR);
-      g.selectAll(".tick text")
-        .attr("stroke", "black")
-        .attr("font-size", "12px");
+      g.selectAll('.tick line').attr('stroke', CANDLE_CHART_GRID_COLOR);
+      g.selectAll('.tick text')
+        .attr('stroke', 'black')
+        .attr('font-size', '12px');
     });
 }
 
@@ -365,18 +365,18 @@ function placeCandleLine(
   yAxisScale: d3.ScaleLinear<number, number, never>,
   xAxisScale: d3.ScaleTime<number, number, never>
 ) {
-  $g.append("line")
+  $g.append('line')
     .attr(
-      "x1",
+      'x1',
       d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth / 2
     )
     .attr(
-      "x2",
+      'x2',
       d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth / 2
     )
-    .attr("y1", d => yAxisScale(d.low_price))
-    .attr("y2", d => yAxisScale(d.high_price))
-    .attr("stroke", "black");
+    .attr('y1', d => yAxisScale(d.low_price))
+    .attr('y2', d => yAxisScale(d.high_price))
+    .attr('stroke', 'black');
   return $g;
 }
 
@@ -387,25 +387,25 @@ function placeCandleRect(
   yAxisScale: d3.ScaleLinear<number, number, never>,
   xAxisScale: d3.ScaleTime<number, number, never>
 ) {
-  $g.append("rect")
-    .classed("candleRect", true)
-    .attr("width", candleWidth * 0.6)
+  $g.append('rect')
+    .classed('candleRect', true)
+    .attr('width', candleWidth * 0.6)
     .attr(
-      "height",
+      'height',
       d =>
         Math.abs(yAxisScale(d.trade_price) - yAxisScale(d.opening_price)) || 0.1
     )
     .attr(
-      "x",
+      'x',
       d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth * 0.8
     )
-    .attr("y", d =>
+    .attr('y', d =>
       Math.min(yAxisScale(d.trade_price), yAxisScale(d.opening_price))
     )
-    .attr("fill", d =>
+    .attr('fill', d =>
       d.opening_price <= d.trade_price ? CANDLE_COLOR_RED : CANDLE_COLOR_BLUE
     )
-    .attr("stroke", "black");
+    .attr('stroke', 'black');
   return;
 }
 
@@ -415,13 +415,13 @@ function placeFullRect(
   xAxisScale: d3.ScaleTime<number, number, never>,
   chartAreaYsize: number
 ) {
-  $g.append("rect")
-    .classed("fullRect", true)
-    .attr("x", d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth)
-    .attr("y", 0)
-    .attr("width", candleWidth)
-    .attr("height", chartAreaYsize)
-    .attr("fill", "transparent");
+  $g.append('rect')
+    .classed('fullRect', true)
+    .attr('x', d => xAxisScale(new Date(d.candle_date_time_kst)) - candleWidth)
+    .attr('y', 0)
+    .attr('width', candleWidth)
+    .attr('height', chartAreaYsize)
+    .attr('fill', 'transparent');
 }
 
 function placeVolumeRect(
@@ -430,11 +430,11 @@ function placeVolumeRect(
   candleWidth: number,
   yAxisScale: d3.ScaleLinear<number, number, never>
 ) {
-  $g.attr("width", candleWidth * 0.6)
-    .attr("height", d => yAxisScale(d.trade_volume))
-    .attr("x", (d, i) => chartAreaXsize - candleWidth * (i + 0.8))
-    .attr("y", 30)
-    .attr("fill", d =>
+  $g.attr('width', candleWidth * 0.6)
+    .attr('height', d => yAxisScale(d.trade_volume))
+    .attr('x', (d, i) => chartAreaXsize - candleWidth * (i + 0.8))
+    .attr('y', 30)
+    .attr('fill', d =>
       d.opening_price <= d.trade_price ? CANDLE_COLOR_RED : CANDLE_COLOR_BLUE
     );
   return;

@@ -1,10 +1,10 @@
-import { styled } from "@mui/material/styles";
-import InputLabel from "@mui/material/InputLabel";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Dispatch, SetStateAction } from "react";
+import { styled } from '@mui/material/styles';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Dispatch, SetStateAction } from 'react';
 
 interface SortSelectControllerProps {
   selectedSort: string;
@@ -25,34 +25,34 @@ export default function SortSelectController({
     selectedSortSetter(event.target.value);
   };
   const treeSortTypeArr = [
-    "change rate",
-    "change rate(absolute)",
-    "market capitalization",
-    "trade price"
+    'change rate',
+    'change rate(absolute)',
+    'market capitalization',
+    'trade price'
   ];
   const runningSortTypeArr = [
-    "ascending",
-    "descending",
-    "absolute",
-    "market capitalization",
-    "trade price"
+    'ascending',
+    'descending',
+    'absolute',
+    'market capitalization',
+    'trade price'
   ];
   const sortType: sortType = {
-    "change rate": "등락률",
-    "change rate(absolute)": "등락률(절대값)",
-    "market capitalization": "시가총액",
-    "trade price": "24시간 거래량",
-    ascending: "등락률(오름차순)",
-    descending: "등락률(내림차순)",
-    absolute: "등락률(절대값)"
+    'change rate': '등락률',
+    'change rate(absolute)': '등락률(절대값)',
+    'market capitalization': '시가총액',
+    'trade price': '24시간 거래량',
+    ascending: '등락률(오름차순)',
+    descending: '등락률(내림차순)',
+    absolute: '등락률(절대값)'
   };
   return (
-    <SortSelectorContainer sx={{ backgroundColor: "#ffffff" }}>
-      <Box sx={{ minWidth: 300, backgroundColor: "white" }}>
+    <SortSelectorContainer sx={{ backgroundColor: '#ffffff' }}>
+      <Box sx={{ minWidth: 300, backgroundColor: 'white' }}>
         <FormControl fullWidth>
           <InputLabel>정렬 기준</InputLabel>
           <Select value={selectedSort} onChange={handleChange}>
-            {selectedChart === "RunningChart"
+            {selectedChart === 'RunningChart'
               ? runningSortTypeArr.map(value => {
                   return (
                     <MenuItem key={value} value={value}>

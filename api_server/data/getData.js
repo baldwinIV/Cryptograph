@@ -1,16 +1,16 @@
-const axios = require("axios");
-require("dotenv").config();
+const axios = require('axios');
+require('dotenv').config();
 
 // 업비트에서 marketCode받는 함수
 async function getUpbitMarketCode() {
   const marketCodes = await axios({
-    method: "get",
-    baseURL: "https://api.upbit.com",
-    url: "/v1/market/all"
+    method: 'get',
+    baseURL: 'https://api.upbit.com',
+    url: '/v1/market/all'
   }).then(response => response.data);
   return marketCodes.reduce((acc, curr) => {
-    const [moneyType, ticker] = curr.market.split("-");
-    if (moneyType !== "KRW") return acc;
+    const [moneyType, ticker] = curr.market.split('-');
+    if (moneyType !== 'KRW') return acc;
     acc.push({
       code: ticker,
       name: curr.english_name,
@@ -24,8 +24,8 @@ async function getUpbitMarketCode() {
 // try-catch 에러 예외 처리
 async function getUpbitMarketDatas(marketCodes) {
   const responseBody = await axios({
-    method: "get",
-    baseURL: "https://api.upbit.com",
+    method: 'get',
+    baseURL: 'https://api.upbit.com',
     url: `v1/ticker?markets=${marketCodes}`
   }).then(response => response.data);
   return responseBody;
@@ -35,12 +35,12 @@ async function getUpbitMarketDatas(marketCodes) {
 // try-catch 에러 예외 처리
 async function getCoinData() {
   const responseBody = await axios({
-    method: "get",
-    baseURL: "https://pro-api.coinmarketcap.com",
-    url: "v1/cryptocurrency/listings/latest?start=1&limit=2000&convert=KRW",
+    method: 'get',
+    baseURL: 'https://pro-api.coinmarketcap.com',
+    url: 'v1/cryptocurrency/listings/latest?start=1&limit=2000&convert=KRW',
     headers: {
-      Accept: "application/json",
-      "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY
+      Accept: 'application/json',
+      'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY
     }
   }).then(response => response.data);
   return responseBody.data;
@@ -54,12 +54,12 @@ async function getCoinData() {
  */
 async function getCoinMetaData(coinIds) {
   const responseBody = await axios({
-    method: "get",
-    baseURL: "https://pro-api.coinmarketcap.com",
+    method: 'get',
+    baseURL: 'https://pro-api.coinmarketcap.com',
     url: `/v2/cryptocurrency/info?id=${coinIds}`,
     headers: {
-      Accept: "application/json",
-      "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY
+      Accept: 'application/json',
+      'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY
     }
   }).then(response => response.data);
   console.log(responseBody.data);

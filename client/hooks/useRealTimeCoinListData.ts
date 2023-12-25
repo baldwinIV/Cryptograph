@@ -1,8 +1,8 @@
-import { CoinRateContentType, CoinRateType } from "@/types/ChartTypes";
-import { MarketCapInfo } from "@/types/CoinDataTypes";
-import { SocketTickerData } from "@/types/CoinPriceTypes";
-import { useRef, useState, useEffect } from "react";
-import useInterval from "./useInterval";
+import { CoinRateContentType, CoinRateType } from '@/types/ChartTypes';
+import { MarketCapInfo } from '@/types/CoinDataTypes';
+import { SocketTickerData } from '@/types/CoinPriceTypes';
+import { useRef, useState, useEffect } from 'react';
+import useInterval from './useInterval';
 
 const COIN_INTERVAL_RATE = 1000;
 let socket: WebSocket | undefined;
@@ -11,17 +11,17 @@ const getInitData = (data: MarketCapInfo[]): CoinRateType => {
   const initData: CoinRateType = {};
   data.forEach(coinData => {
     const coinContent: CoinRateContentType = {
-      name: "",
-      ticker: "",
-      parent: "",
+      name: '',
+      ticker: '',
+      parent: '',
       acc_trade_price_24h: 0,
       market_cap: 0,
       cmc_rank: 0,
       value: 0
     };
     coinContent.name = coinData.name_kr;
-    coinContent.ticker = "KRW-" + coinData.name;
-    coinContent.parent = "Origin";
+    coinContent.ticker = 'KRW-' + coinData.name;
+    coinContent.parent = 'Origin';
     coinContent.acc_trade_price_24h = coinData.acc_trade_price_24h;
     coinContent.market_cap = Number(coinData.market_cap);
     coinContent.cmc_rank = Number(coinData.cmc_rank);
@@ -41,10 +41,10 @@ export function useRealTimeCoinListData(data: MarketCapInfo[]) {
       isWindowForeGround.current = !document.hidden;
       //안보이면 false, 보이면 true
     };
-    document.addEventListener("visibilitychange", setVisibilityCallback);
+    document.addEventListener('visibilitychange', setVisibilityCallback);
     connectWS(data, coinDataStoreRef.current.setCoinData);
     return () => {
-      document.removeEventListener("visibilitychange", setVisibilityCallback);
+      document.removeEventListener('visibilitychange', setVisibilityCallback);
       closeWS();
     };
   }, []);
@@ -68,18 +68,18 @@ function connectWS(
     socket.close();
   }
 
-  socket = new WebSocket("wss://api.upbit.com/websocket/v1");
-  socket.binaryType = "arraybuffer";
+  socket = new WebSocket('wss://api.upbit.com/websocket/v1');
+  socket.binaryType = 'arraybuffer';
 
   socket.onopen = function () {
-    const markets = data.map(coinData => "KRW-" + coinData.name).join(",");
+    const markets = data.map(coinData => 'KRW-' + coinData.name).join(',');
     filterRequest(`[{"ticket":"test"},{"type":"ticker","codes":[${markets}]}]`);
   };
   socket.onclose = function () {
     socket = undefined;
   };
   socket.onmessage = function (e) {
-    const enc = new TextDecoder("utf-8");
+    const enc = new TextDecoder('utf-8');
     const arr = new Uint8Array(e.data);
     const str_d = enc.decode(arr);
     const d = JSON.parse(str_d);

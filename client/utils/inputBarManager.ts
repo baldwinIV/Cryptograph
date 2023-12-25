@@ -1,4 +1,4 @@
-import { MarketCapInfo } from "@/types/CoinDataTypes";
+import { MarketCapInfo } from '@/types/CoinDataTypes';
 
 export function validateInputName(
   coinNames: MarketCapInfo[],

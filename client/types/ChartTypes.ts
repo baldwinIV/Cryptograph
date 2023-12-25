@@ -19,25 +19,25 @@ export interface CandleData {
   candle_acc_trade_price: number;
   trade_timestamp: number;
 }
-export const ChartTypeArr = ["TreeChart", "RunningChart"] as const;
+export const ChartTypeArr = ['TreeChart', 'RunningChart'] as const;
 export type ChartType = typeof ChartTypeArr[number];
 export type ChartPeriodItered<T> = {
   [K in ChartPeriod]: T;
 };
 export type ChartPeriod =
-  | "minutes/1"
-  | "minutes/3"
-  | "minutes/5"
-  | "minutes/60"
-  | "minutes/240"
-  | "days"
-  | "weeks";
+  | 'minutes/1'
+  | 'minutes/3'
+  | 'minutes/5'
+  | 'minutes/60'
+  | 'minutes/240'
+  | 'days'
+  | 'weeks';
 export const DatePeriod: ChartPeriodItered<number> = {
-  "minutes/1": 60,
-  "minutes/3": 180,
-  "minutes/5": 300,
-  "minutes/60": 3600,
-  "minutes/240": 14400,
+  'minutes/1': 60,
+  'minutes/3': 180,
+  'minutes/5': 300,
+  'minutes/60': 3600,
+  'minutes/240': 14400,
   days: 86400,
   weeks: 604800
 };

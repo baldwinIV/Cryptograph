@@ -1,4 +1,4 @@
-import { MarketCapInfo } from "@/types/CoinDataTypes";
+import { MarketCapInfo } from '@/types/CoinDataTypes';
 
 interface dict<T> {
   [key: string]: T;
@@ -7,9 +7,9 @@ interface dict<T> {
 export default function MakeCoinDict(data: MarketCapInfo[]) {
   const dict: dict<Array<string>> = {};
   data.map(data => {
-    let str_ticker = "";
-    let str_kr = "";
-    let str_es = "";
+    let str_ticker = '';
+    let str_kr = '';
+    let str_es = '';
     for (const alpha of data.name) {
       str_ticker += alpha;
       if (dict[str_ticker]) {

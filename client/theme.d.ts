@@ -1,9 +1,9 @@
 import {
   Theme as OriginalTheme,
   ThemeOptions as OriginalThemeOption
-} from "@mui/material/styles";
+} from '@mui/material/styles';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface Palette {
     custom: CustomPaletteColor;
   }

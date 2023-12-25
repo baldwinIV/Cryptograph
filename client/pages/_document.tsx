@@ -5,13 +5,13 @@ import Document, {
   NextScript,
   DocumentContext,
   DocumentInitialProps
-} from "next/document";
-import createEmotionServer from "@emotion/server/create-instance";
-import theme from "../style/theme";
-import createEmotionCache from "../style/createEmotionCache";
-import { EmotionCache } from "@emotion/react";
-import { AppType } from "next/app";
-import { ComponentType, ReactNode } from "react";
+} from 'next/document';
+import createEmotionServer from '@emotion/server/create-instance';
+import theme from '../style/theme';
+import createEmotionCache from '../style/createEmotionCache';
+import { EmotionCache } from '@emotion/react';
+import { AppType } from 'next/app';
+import { ComponentType, ReactNode } from 'react';
 
 interface DocumentProps extends DocumentInitialProps {
   emotionStyleTags: ReactNode[];
@@ -102,7 +102,7 @@ MyDocument.getInitialProps = async (
   const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map(style => (
     <style
-      data-emotion={`${style.key} ${style.ids.join(" ")}`}
+      data-emotion={`${style.key} ${style.ids.join(' ')}`}
       key={style.key}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}

@@ -1,11 +1,11 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 const {
   getCoinInfo,
   getMarketCapInfos,
   getPriceData
-} = require("./data/configData");
+} = require('./data/configData');
 
 const PORT = 8080;
 let coinInfos = null;
@@ -27,11 +27,11 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    method: "GET"
+    method: 'GET'
   })
 );
 
-app.get("/coin-info/:code", (req, res) => {
+app.get('/coin-info/:code', (req, res) => {
   console.log(req.params);
   const code = req.params.code;
   if (coinInfos === null) {
@@ -45,7 +45,7 @@ app.get("/coin-info/:code", (req, res) => {
   res.status(200).send(coinInfos[code]);
 });
 
-app.get("/market-cap-info", async (req, res) => {
+app.get('/market-cap-info', async (req, res) => {
   const marketCapInfos = await getMarketCapInfos(coinInfos);
   if (marketCapInfos === null) {
     res.status(503).end();
@@ -54,7 +54,7 @@ app.get("/market-cap-info", async (req, res) => {
   res.status(200).send(marketCapInfos);
 });
 
-app.get("/market-price-info", async (req, res) => {
+app.get('/market-price-info', async (req, res) => {
   const priceData = await getPriceData(coinInfos);
   if (priceData === null) {
     res.status(503).end();

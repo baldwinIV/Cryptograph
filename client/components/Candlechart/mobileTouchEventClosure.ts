@@ -2,10 +2,10 @@ import {
   CandleData,
   CandleChartRenderOption,
   PointerData
-} from "@/types/ChartTypes";
-import { handleMouseEvent } from "@/utils/chartManager";
-import { D3DragEvent } from "d3";
-import { Dispatch, SetStateAction } from "react";
+} from '@/types/ChartTypes';
+import { handleMouseEvent } from '@/utils/chartManager';
+import { D3DragEvent } from 'd3';
+import { Dispatch, SetStateAction } from 'react';
 
 const getEuclideanDistance = (touches: Touch[]): number => {
   return Math.sqrt(
@@ -23,13 +23,13 @@ export const mobileEventClosure = (
 ) => {
   let prevDistance = -1;
   const start = (event: D3DragEvent<SVGSVGElement, CandleData, unknown>) => {
-    if (event.identifier === "mouse" || event.sourceEvent.touches.length !== 2)
+    if (event.identifier === 'mouse' || event.sourceEvent.touches.length !== 2)
       //마우스거나 (==데스크탑이거나), 2개의 멀티터치가 아니면 아무것도 하지 않음
       return;
     prevDistance = getEuclideanDistance(event.sourceEvent.touches);
   };
   const drag = (event: D3DragEvent<SVGSVGElement, CandleData, unknown>) => {
-    if (event.identifier !== "mouse" && event.sourceEvent.touches.length == 2) {
+    if (event.identifier !== 'mouse' && event.sourceEvent.touches.length == 2) {
       //여기는 줌 코드
       const nowDistance = getEuclideanDistance(event.sourceEvent.touches);
       if (nowDistance === prevDistance) return;

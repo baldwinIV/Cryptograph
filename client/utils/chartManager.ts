@@ -11,22 +11,22 @@ import {
   CHART_AXIS_RECT_HEIGHT,
   DEFAULT_MAX_CANDLE_COUNT,
   DEFAULT_MAX_RENDER_START_INDEX
-} from "@/constants/ChartConstants";
-import { DatePeriod } from "@/types/ChartTypes";
-import { RefElementSize } from "hooks/useRefElementSize";
+} from '@/constants/ChartConstants';
+import { DatePeriod } from '@/types/ChartTypes';
+import { RefElementSize } from 'hooks/useRefElementSize';
 import {
   CandleChartRenderOption,
   CandleData,
   PointerData,
   ChartPeriod,
   MainChartPointerData
-} from "@/types/ChartTypes";
-import * as d3 from "d3";
-import { makeDate } from "./dateManager";
-import { blueColorScale, redColorScale } from "@/styles/colorScale";
-import { CoinRateContentType } from "@/types/ChartTypes";
-import { Dispatch, SetStateAction } from "react";
-import { transDate } from "@/utils/dateManager";
+} from '@/types/ChartTypes';
+import * as d3 from 'd3';
+import { makeDate } from './dateManager';
+import { blueColorScale, redColorScale } from '@/styles/colorScale';
+import { CoinRateContentType } from '@/types/ChartTypes';
+import { Dispatch, SetStateAction } from 'react';
+import { transDate } from '@/utils/dateManager';
 
 export function getVolumeHeightScale(
   data: CandleData[],
@@ -38,7 +38,7 @@ export function getVolumeHeightScale(
   ];
   if (!min || !max) {
     console.error(data, data.length);
-    console.error("데이터에 문제가 있다. 서버에서 잘못 쏨");
+    console.error('데이터에 문제가 있다. 서버에서 잘못 쏨');
     return undefined;
   }
   return d3.scaleLinear().domain([min, max]).range([CHART_AREA_Y_SIZE, 30]);
@@ -51,7 +51,7 @@ export function getYAxisScale(data: CandleData[], CHART_AREA_Y_SIZE: number) {
   ];
   if (!min || !max) {
     console.error(data, data.length);
-    console.error("데이터에 문제가 있다. 서버에서 잘못 쏨");
+    console.error('데이터에 문제가 있다. 서버에서 잘못 쏨');
     return undefined;
   }
   const diff = max - min;
@@ -91,45 +91,45 @@ export function updateCurrentPrice(
   chartAreaXsize: number,
   chartAreaYSize: number
 ) {
-  const $currentPrice = d3.select("svg#current-price");
+  const $currentPrice = d3.select('svg#current-price');
   const yCoord = yAxisScale(data[0].trade_price);
   const strokeColor =
     data[0].opening_price < data[0].trade_price
       ? CANDLE_COLOR_RED
       : CANDLE_COLOR_BLUE;
   $currentPrice
-    .select("line")
-    .attr("x1", chartAreaXsize)
-    .attr("x2", 0)
-    .attr("y1", yCoord)
-    .attr("y2", yCoord)
-    .attr("stroke", strokeColor)
-    .attr("stroke-width", 2)
-    .attr("stroke-dasharray", "10,10");
+    .select('line')
+    .attr('x1', chartAreaXsize)
+    .attr('x2', 0)
+    .attr('y1', yCoord)
+    .attr('y2', yCoord)
+    .attr('stroke', strokeColor)
+    .attr('stroke-width', 2)
+    .attr('stroke-dasharray', '10,10');
   $currentPrice
-    .select("rect")
-    .attr("fill", strokeColor)
-    .attr("width", CHART_AXIS_RECT_WIDTH)
-    .attr("height", CHART_AXIS_RECT_HEIGHT)
-    .attr("x", chartAreaXsize)
+    .select('rect')
+    .attr('fill', strokeColor)
+    .attr('width', CHART_AXIS_RECT_WIDTH)
+    .attr('height', CHART_AXIS_RECT_HEIGHT)
+    .attr('x', chartAreaXsize)
     .attr(
-      "y",
+      'y',
       Math.min(
         Math.max(0, yCoord - CHART_AXIS_RECT_HEIGHT / 2),
         chartAreaYSize - CHART_AXIS_RECT_HEIGHT
       )
     );
   $currentPrice
-    .select("text")
-    .attr("fill", "white")
-    .attr("font-size", CHART_FONT_SIZE)
+    .select('text')
+    .attr('fill', 'white')
+    .attr('font-size', CHART_FONT_SIZE)
     .attr(
-      "transform",
+      'transform',
       getTextTransform(yCoord, 1, chartAreaXsize, chartAreaYSize)
     )
-    .attr("font-weight", "600")
-    .attr("text-anchor", "middle")
-    .attr("dominant-baseline", "middle")
+    .attr('font-weight', '600')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
     .text(data[0].trade_price.toLocaleString());
 }
 
@@ -157,64 +157,64 @@ export function updatePointerUI(
   if (!yAxisScale || !xAxisScale) {
     return;
   }
-  d3.select("text#price-info")
-    .attr("fill", color ? color : "black")
-    .attr("font-size", CHART_FONT_SIZE)
+  d3.select('text#price-info')
+    .attr('fill', color ? color : 'black')
+    .attr('font-size', CHART_FONT_SIZE)
     .text(priceText);
-  d3.select("svg#mouse-pointer-UI")
-    .selectAll("g")
+  d3.select('svg#mouse-pointer-UI')
+    .selectAll('g')
     .data(transPointerInfoToArray(pointerInfo))
     .join(
       function (enter) {
-        const $g = enter.append("g");
-        $g.append("path")
-          .attr("d", (d, i) =>
+        const $g = enter.append('g');
+        $g.append('path')
+          .attr('d', (d, i) =>
             getPathDAttr(d, i, chartAreaXsize, chartAreaYsize)
           )
-          .attr("stroke", CANDLE_CHART_POINTER_LINE_COLOR);
-        $g.append("rect")
-          .attr("width", CHART_AXIS_RECT_WIDTH)
-          .attr("height", CHART_AXIS_RECT_HEIGHT)
-          .attr("fill", CANDLE_CHART_POINTER_LINE_COLOR)
-          .attr("transform", (d, i) =>
+          .attr('stroke', CANDLE_CHART_POINTER_LINE_COLOR);
+        $g.append('rect')
+          .attr('width', CHART_AXIS_RECT_WIDTH)
+          .attr('height', CHART_AXIS_RECT_HEIGHT)
+          .attr('fill', CANDLE_CHART_POINTER_LINE_COLOR)
+          .attr('transform', (d, i) =>
             getRectTransform(d, i, chartAreaXsize, chartAreaYsize)
           );
 
-        $g.append("text")
-          .attr("fill", "black")
-          .attr("font-size", CHART_FONT_SIZE)
-          .attr("transform", (d, i) =>
+        $g.append('text')
+          .attr('fill', 'black')
+          .attr('font-size', CHART_FONT_SIZE)
+          .attr('transform', (d, i) =>
             getTextTransform(d, i, chartAreaXsize, chartAreaYsize)
           )
-          .attr("font-weight", "600")
+          .attr('font-weight', '600')
           .text((d, i) => {
             if (i === 0) {
               return getTimeText(pointerInfo.data);
             }
             return Math.round(yAxisScale.invert(d)).toLocaleString();
           })
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", (d, i) =>
-            i === 0 ? "hanging" : "middle"
+          .attr('text-anchor', 'middle')
+          .attr('dominant-baseline', (d, i) =>
+            i === 0 ? 'hanging' : 'middle'
           );
         return $g;
       },
       function (update) {
         update
-          .select("path")
-          .attr("d", (d, i) =>
+          .select('path')
+          .attr('d', (d, i) =>
             getPathDAttr(d, i, chartAreaXsize, chartAreaYsize)
           );
         update
-          .select("rect")
-          .attr("width", CHART_AXIS_RECT_WIDTH)
-          .attr("height", CHART_AXIS_RECT_HEIGHT)
-          .attr("transform", (d, i) =>
+          .select('rect')
+          .attr('width', CHART_AXIS_RECT_WIDTH)
+          .attr('height', CHART_AXIS_RECT_HEIGHT)
+          .attr('transform', (d, i) =>
             getRectTransform(d, i, chartAreaXsize, chartAreaYsize)
           );
         update
-          .select("text")
-          .attr("transform", (d, i) =>
+          .select('text')
+          .attr('transform', (d, i) =>
             getTextTransform(d, i, chartAreaXsize, chartAreaYsize)
           )
           .text((d, i) => {
@@ -286,7 +286,7 @@ function getRectTransform(
 // 시간정보 텍스트 반환
 function getTimeText(unitData: CandleData | null) {
   if (!unitData || !unitData.candle_date_time_kst) {
-    return "";
+    return '';
   }
   const timeString = unitData.candle_date_time_kst;
   return `${timeString.substring(5, 10)} ${timeString.substring(11, 16)}`;
@@ -304,7 +304,7 @@ function getTimeTextByPosX(
 // 마우스 포인터가 가리키는 위치의 분봉데이터를 찾아 렌더링될 가격정보를 반환
 function getPriceInfo(pointerInfo: PointerData) {
   if (pointerInfo.positionX < 0) {
-    return { priceText: "" };
+    return { priceText: '' };
   }
   const candleUnitData = pointerInfo.data;
   if (
@@ -314,7 +314,7 @@ function getPriceInfo(pointerInfo: PointerData) {
     !candleUnitData.opening_price ||
     !candleUnitData.trade_price
   ) {
-    return { priceText: "" };
+    return { priceText: '' };
   }
   return {
     priceText: [
@@ -322,7 +322,7 @@ function getPriceInfo(pointerInfo: PointerData) {
       `저가: ${candleUnitData.low_price}`,
       `시가: ${candleUnitData.opening_price}`,
       `종가: ${candleUnitData.trade_price}`
-    ].join("  "),
+    ].join('  '),
     color:
       candleUnitData.opening_price < candleUnitData.trade_price
         ? CANDLE_COLOR_RED
@@ -419,9 +419,9 @@ export const colorQuantizeScale = (max: number, value: number) => {
 
 export const convertUnit = (unit: number) => {
   if (unit >= 1000000000000) {
-    return (unit / 1000000000000).toFixed(2) + "조";
+    return (unit / 1000000000000).toFixed(2) + '조';
   }
-  return (unit / 100000000).toFixed(0) + "억";
+  return (unit / 100000000).toFixed(0) + '억';
 };
 export function MainChartHandleMouseEvent(
   event: MouseEvent,
@@ -430,7 +430,7 @@ export function MainChartHandleMouseEvent(
   width: number,
   height: number
 ) {
-  if (event.type === "mousemove") {
+  if (event.type === 'mousemove') {
     pointerInfoSetter({
       offsetX:
         (width * 2) / 3 > event.offsetX + 50

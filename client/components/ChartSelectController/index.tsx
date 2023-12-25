@@ -1,11 +1,11 @@
-import { styled } from "@mui/material/styles";
-import { Dispatch, SetStateAction } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { ChartTypeArr, ChartType } from "@/types/ChartTypes";
+import { styled } from '@mui/material/styles';
+import { Dispatch, SetStateAction } from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { ChartTypeArr, ChartType } from '@/types/ChartTypes';
 
 interface ChartSelectControllerProps {
   selected: ChartType;

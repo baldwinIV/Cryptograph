@@ -1,4 +1,4 @@
-import { ChartPeriod, DatePeriod } from "@/types/ChartTypes";
+import { ChartPeriod, DatePeriod } from '@/types/ChartTypes';
 
 export function transDate(timestamp: number, period: ChartPeriod): string {
   const date = makeDate(timestamp, period);
@@ -8,7 +8,7 @@ export function transDate(timestamp: number, period: ChartPeriod): string {
 
 export function makeDate(timestamp: number, period: ChartPeriod): Date {
   const date = new Date(timestamp - (timestamp % (DatePeriod[period] * 1000)));
-  if (period === "weeks") {
+  if (period === 'weeks') {
     const originalDate = new Date(timestamp);
     if (originalDate.getUTCDay() < 4) {
       date.setHours(105);

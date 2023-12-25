@@ -10,13 +10,13 @@ function getCurrentTime() {
   return dateString;
 }
 
-const priceUnit = { 10000: "만", 100000000: "억", 1000000000000: "조" };
+const priceUnit = { 10000: '만', 100000000: '억', 1000000000000: '조' };
 
 // 시가총액 변환하는 함수
 function transPrice(price) {
   let unit = 10000;
   if (price < unit) {
-    return Math.floor(price * 100) / 100 + "";
+    return Math.floor(price * 100) / 100 + '';
   }
   while (unit < Number.MAX_SAFE_INTEGER) {
     if (price >= unit && price < unit * 10000) {

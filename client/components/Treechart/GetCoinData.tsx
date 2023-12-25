@@ -1,9 +1,9 @@
-import { getTreeMapDataArray } from "@/utils/upbitManager";
-import { CoinRateType } from "@/types/ChartTypes";
+import { getTreeMapDataArray } from '@/utils/upbitManager';
+import { CoinRateType } from '@/types/ChartTypes';
 
 export async function UpdateTreeData(coinRate: CoinRateType) {
   const tosetData = { ...coinRate };
-  const tick = Object.keys(tosetData).join(",");
+  const tick = Object.keys(tosetData).join(',');
   //tick은 코인들의 이름배열 [KRW-BTC,KRW-ETC 등등]
   const allUpbitData = await getTreeMapDataArray(tick);
   for (const coin of allUpbitData) {

@@ -3,8 +3,8 @@ const {
   getCoinMetaData,
   getUpbitMarketCode,
   getUpbitMarketDatas
-} = require("./getData");
-const { getCurrentTime, transPrice } = require("../utils/timeUtils");
+} = require('./getData');
+const { getCurrentTime, transPrice } = require('../utils/timeUtils');
 
 // 코인정보 반환하는 함수
 // 업비트API를 이용하여 코인종류 확인하고 해당 코인들 정보 코인마켓캡에서 받아와 조합
@@ -20,7 +20,7 @@ async function getCoinInfo() {
     // coinData를 순회하며 알맞은 info를 찾아 저장한다.
     for (const data of coinDatas) {
       // MFT => HIFI 예외처리 (수정필요)
-      if (data.symbol === "MFT" && code === "HIFI") {
+      if (data.symbol === 'MFT' && code === 'HIFI') {
         coinInfo.id = data.id;
         coinInfo.symbol = code;
         coinInfo.name = data.name;
@@ -64,13 +64,13 @@ async function getCoinInfo() {
     result[code] = coinInfo;
   }
   // info에서 얻는 메타데이터 추가 result에 2차로 저장
-  const coinMetaDatas = await getCoinMetaData(coinIds.join(","));
+  const coinMetaDatas = await getCoinMetaData(coinIds.join(','));
   for (const { code } of upbitMarketCodes) {
     const coinInfo = result[code];
     const id = coinInfo.id;
     const metaData = coinMetaDatas[id];
     coinInfo.website =
-      metaData.urls.website.length === 0 ? "" : metaData.urls.website[0];
+      metaData.urls.website.length === 0 ? '' : metaData.urls.website[0];
     coinInfo.logo = metaData.logo;
     coinInfo.description = metaData.description;
   }
@@ -86,10 +86,10 @@ async function getMarketCapInfos(coinInfos) {
   const upbitMarketDatas = await getUpbitMarketDatas(
     Object.keys(coinInfos)
       .map(code => `KRW-${code}`)
-      .join(",")
+      .join(',')
   );
   const result = upbitMarketDatas.map(marketData => {
-    const code = marketData.market.split("-")[1];
+    const code = marketData.market.split('-')[1];
     return {
       name: code,
       name_kr: coinInfos[code].name_kr,
@@ -111,12 +111,12 @@ async function getPriceData(coinInfos) {
   }
   const marketCodes = await getUpbitMarketCode();
   const priceData = await getUpbitMarketDatas(
-    marketCodes.map(({ code }) => `KRW-${code}`).join(",")
+    marketCodes.map(({ code }) => `KRW-${code}`).join(',')
   );
   const result = {};
   priceData.forEach((data, index) => {
     const info = {};
-    const code = data.market.split("-")[1];
+    const code = data.market.split('-')[1];
     info.logo = coinInfos[code].logo;
     info.name_kr = coinInfos[code].name_kr;
     info.name = coinInfos[code].symbol;

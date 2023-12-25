@@ -5,31 +5,31 @@ import {
   Dispatch,
   SetStateAction,
   FunctionComponent
-} from "react";
+} from 'react';
 import {
   CandleChartOption,
   CandleChartRenderOption,
   CandleData,
   PointerData
-} from "@/types/ChartTypes";
+} from '@/types/ChartTypes';
 import {
   checkNeedFetch,
   getInitRenderOption,
   getRenderOptionByWindow,
   updatePointerUI
-} from "@/utils/chartManager";
+} from '@/utils/chartManager';
 import {
   DEFAULT_POINTER_DATA,
   MAX_FETCH_CANDLE_COUNT
-} from "@/constants/ChartConstants";
-import { getCandleDataArray } from "@/utils/upbitManager";
-import { useRefElementSize } from "hooks/useRefElementSize";
-import { styled } from "@mui/material";
+} from '@/constants/ChartConstants';
+import { getCandleDataArray } from '@/utils/upbitManager';
+import { useRefElementSize } from 'hooks/useRefElementSize';
+import { styled } from '@mui/material';
 import {
   initCandleChart,
   translateCandleChart,
   updateCandleChart
-} from "./chartController";
+} from './chartController';
 export interface CandleChartProps {
   chartOption: CandleChartOption;
   candleData: CandleData[];
@@ -120,7 +120,7 @@ export const CandleChart: FunctionComponent<CandleChartProps> = props => {
           props.candleData[props.candleData.length - 1].candle_date_time_utc
         ).then(res => {
           if (res === null) {
-            console.error("코인 쿼리 실패, 404에러");
+            console.error('코인 쿼리 실패, 404에러');
             return;
           }
           if (res.length === 0) {
@@ -191,12 +191,12 @@ export const CandleChart: FunctionComponent<CandleChartProps> = props => {
   );
 };
 
-const ChartContainer = styled("div")`
+const ChartContainer = styled('div')`
   display: flex;
   height: 100%;
   width: 100%;
   background: #ffffff;
-  ${props => props.theme.breakpoints.down("tablet")} {
+  ${props => props.theme.breakpoints.down('tablet')} {
     height: calc(100% - 50px);
     min-height: 300px;
   }
