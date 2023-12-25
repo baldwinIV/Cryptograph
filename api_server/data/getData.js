@@ -62,7 +62,6 @@ async function getCoinMetaData(coinIds) {
       'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY
     }
   }).then(response => response.data);
-  console.log(responseBody.data);
   return responseBody.data;
 }
 
