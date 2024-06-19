@@ -35,11 +35,13 @@ export default function Detail({
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<number>(0);
   useEffect(() => {
+    //alert(`${market}차트로 이동`);
     setCandleChartOption(prev => {
       return { ...prev, marketType: market };
     });
   }, [market]);
 
+  //페이지 이동할 때  candledata가 전에게 clear가 안되어서 겹치는듯?
   const [realtimeCandleData, setRealtimeCandleData, realtimePriceInfo] =
     useRealTimeUpbitData(candleChartOption, candleData, priceInfo);
   return (
@@ -130,7 +132,7 @@ export const getServerSideProps: GetServerSideProps<
       notFound: true
     };
   }
-
+  console.log('serverSideRendered Market : ' + market);
   const fetchedCandleData: CandleData[] | null = await getCandleDataArray(
     DEFAULT_CANDLE_PERIOD,
     market,
