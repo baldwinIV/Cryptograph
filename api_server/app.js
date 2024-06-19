@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 const {
@@ -14,16 +15,14 @@ getCoinInfo().then(result => {
   coinInfos = result;
 });
 
-setInterval(
-  () => {
-    getCoinInfo().then(result => {
-      coinInfos = result;
-    });
-  },
-  60 * 60 * 1000
-);
+setInterval(() => {
+  getCoinInfo().then(result => {
+    coinInfos = result;
+  });
+}, 60 * 60 * 1000);
 
 const app = express();
+app.use(express.static('admin', { extensions: ['html', 'js'] }));
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -61,6 +60,11 @@ app.get('/market-price-info', async (req, res) => {
     return;
   }
   res.status(200).send(priceData);
+});
+
+app.get('/admin', function (req, res) {
+  const filePath = path.join(__dirname, 'admin', 'index.html');
+  res.status(200).sendFile(filePath);
 });
 
 app.listen(PORT, () => {

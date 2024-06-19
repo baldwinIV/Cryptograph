@@ -26,6 +26,7 @@ export const useRealTimeUpbitData = (
     useState<CoinPriceObj>(priceInfo);
   const isInitialMount = useRef(true);
   const priceStoreRef = useRef(priceStoreGenerator());
+  const hasConnectedRef = useRef(false);
 
   // 1초 간격으로 store에 저장된 가격정보 변동을 realtimePriceInfo상태에 반영 -> 실시간 가격정보 컴포넌트 리렌더링
   useInterval(() => {
@@ -35,11 +36,16 @@ export const useRealTimeUpbitData = (
   }, 1000);
 
   useEffect(() => {
-    connectWS(priceInfo);
+    console.log('컴포넌트 마운트됨');
+    if (!hasConnectedRef.current) {
+      connectWS(priceInfo);
+      hasConnectedRef.current = true;
+    }
+    // connectWS(priceInfo);
     return () => {
       closeWS();
     };
-  }, []);
+  }, []); //priceInfo 바뀐다고 연결 안해줘도 된다.
 
   useEffect(() => {
     if (!socket) {
@@ -55,6 +61,7 @@ export const useRealTimeUpbitData = (
       if (d.type == 'ticker') {
         const code = d.code.split('-')[1];
         if (code === market) {
+          console.log(market + '---' + JSON.stringify(d.code));
           setRealtimeCandleData(prevData => updateData(prevData, d, period));
         }
         // 소켓으로 정보가 전달되면 store에 저장
@@ -81,35 +88,33 @@ export const useRealTimeUpbitData = (
 };
 
 function connectWS(priceInfo: CoinPriceObj) {
-  if (socket !== undefined) {
-    socket.close();
-  }
+  closeWS();
 
   socket = new WebSocket('wss://api.upbit.com/websocket/v1');
   socket.binaryType = 'arraybuffer';
 
   socket.onopen = function () {
+    console.log('소켓 연결됨');
     const markets = Object.keys(priceInfo)
       .map(code => `"KRW-${code}"`)
       .join(',');
     filterRequest(`[{"ticket":"test"},{"type":"ticker","codes":[${markets}]}]`);
   };
   socket.onclose = function () {
+    console.log('소켓 끊어짐');
     socket = undefined;
   };
 }
 
 // 웹소켓 연결 해제
 function closeWS() {
-  if (socket !== undefined) {
-    socket.close();
-    socket = undefined;
-  }
+  if (socket === undefined || socket.readyState !== WebSocket.OPEN) return; //해제할수없는데 해제시킬수는 없다.
+  socket.close();
 }
 
 // 웹소켓 요청
 function filterRequest(filter: string) {
-  if (socket == undefined) {
+  if (socket === undefined || socket.readyState !== WebSocket.OPEN) {
     return;
   }
   socket.send(filter);

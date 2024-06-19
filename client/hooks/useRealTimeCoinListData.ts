@@ -47,7 +47,7 @@ export function useRealTimeCoinListData(data: MarketCapInfo[]) {
       document.removeEventListener('visibilitychange', setVisibilityCallback);
       closeWS();
     };
-  }, []);
+  }, [data]);
 
   useInterval(() => {
     if (!isWindowForeGround.current) {
@@ -64,9 +64,7 @@ function connectWS(
   data: MarketCapInfo[],
   setCoinData: (tickData: SocketTickerData) => void
 ) {
-  if (socket !== undefined) {
-    socket.close();
-  }
+  closeWS();
 
   socket = new WebSocket('wss://api.upbit.com/websocket/v1');
   socket.binaryType = 'arraybuffer';
@@ -89,15 +87,13 @@ function connectWS(
 
 // 웹소켓 연결 해제
 function closeWS() {
-  if (socket === undefined) return;
+  if (socket === undefined || socket.readyState !== WebSocket.OPEN) return;
   socket.close();
 }
 
 // 웹소켓 요청
 function filterRequest(filter: string) {
-  if (socket == undefined) {
-    return;
-  }
+  if (socket === undefined || socket.readyState !== WebSocket.OPEN) return;
   socket.send(filter);
 }
 
